@@ -1,7 +1,10 @@
 #encoding: utf-8
 
 class JsonWrapper
+  include Enumerable
+
   autoload :VERSION, 'json_wrapper/version'
+
   # Internal value
   # @return [Hash, Array, String, Number, Nil] internal value
   attr_reader :value
@@ -16,55 +19,55 @@ class JsonWrapper
   # If value is a Hash
   # @return [True, False] if value is a Hash
   def hash?
-    @value.kind_of? Hash
+    value.kind_of? Hash
   end
 
   # If value is a Array
   # @return [True, False] if value is an Array
   def array?
-    @value.kind_of? Array
+    value.kind_of? Array
   end
 
   # If value is String
   # @return [True,False] if value is a String
   def string?
-    @value.kind_of? String
+    value.kind_of? String
   end
 
   # If value is a Number
   # @return [True,False] if value is an Number
   def number?
-    @value.kind_of? Numeric
+    value.kind_of? Numeric
   end
 
   # If value is a Nil
   # @return [True, False] if value is a Nil
   def null?
-    @value.nil?
+    value.nil?
   end
 
   # Get the value if is a Hash
   # @return [Hash, nil] value if it's a Hash
   def hash
-    @value if hash?
+    value if hash?
   end
 
   # Get the value if is a Array
   # @return [Array, Nil] value if it's a Array
   def array
-    @value if array?
+    value if array?
   end
 
   # Get the value if value is string
   # @return [String, Nil] value if it's a String
   def string
-    @value if string?
+    value if string?
   end
 
   # Get the value if value is a number
   # @return [Fixnum, Float, Nil] value if it's a Numeric, typically Fixnum or Float
   def number
-    @value if number?
+    value if number?
   end
 
   # Force convert to Hash
@@ -82,16 +85,16 @@ class JsonWrapper
   # Force convert to String
   # @return [String] String format of value, "" if not capable
   def string!
-    return @value if string?
-    return @value.to_s if number?
+    return value if string?
+    return value.to_s if number?
     ""
   end
 
   # Force convert to number
   # @return [Numeric] Number format of value, 0 if not capable
   def number!
-    return @value if number?
-    return @value.to_f if string?
+    return value if number?
+    return value.to_f if string?
     0
   end
 
@@ -111,9 +114,9 @@ class JsonWrapper
   # @param key [String, Symbol, Fixnum] key
   # @return [JsonWrapper] JsonWrapper of the value
   def get(key)
-    return JsonWrapper.new(@value[key])       if array? and key.kind_of?(Fixnum)
-    return JsonWrapper.new(@value[key])       if hash? and key.kind_of?(String)
-    return JsonWrapper.new(@value[key.to_s])  if hash? and key.kind_of?(Symbol)
+    return JsonWrapper.new(value[key])       if array? and key.kind_of?(Fixnum)
+    return JsonWrapper.new(value[key])       if hash? and key.kind_of?(String)
+    return JsonWrapper.new(value[key.to_s])  if hash? and key.kind_of?(Symbol)
     JsonWrapper.new
   end
 
@@ -125,6 +128,20 @@ class JsonWrapper
   # @see #get
   def method_missing(*args)
     get args.first
+  end
+
+  # Return #count if value is a String, Array or Hash
+  # @return [Number] count, 0 if not capable
+  def count
+    return self.value.count if array? or hash? or string?
+    0
+  end
+
+  # each method for Enumerable
+  def each(&block)
+    array!.each do |v|
+      block.call(JsonWrapper.new(v))
+    end
   end
 
 end

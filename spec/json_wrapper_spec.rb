@@ -115,4 +115,14 @@ RSpec.describe JsonWrapper do
     expect(j.hash_value_2.string_value.array).to eq(nil)
     expect(j.what.hello.null?).to eq true
   end
+  it "should work with Enumerable" do
+    result = j.array_value_3.all? do |v|
+      v.number! == 1
+    end
+    expect(result).to eq true
+    result = j.array_value_2.any? do |v|
+      v.number! == 1
+    end
+    expect(result).to eq true
+  end
 end

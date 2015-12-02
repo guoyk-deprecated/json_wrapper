@@ -32,6 +32,8 @@ json[:key_a][:key_not_exists].string! == ""
 
 ```
 
+`JsonWrapper` supports `Enumerator` methods.
+
 # LICENSE
 
 See 'LICENSE', basically MIT license.
