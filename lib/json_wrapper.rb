@@ -1,8 +1,7 @@
 #encoding: utf-8
 
 class JsonWrapper
-  VERSION = "0.1.0"
-
+  autoload :VERSION, 'json_wrapper/version'
   # Internal value
   # @return [Hash, Array, String, Number, Nil] internal value
   attr_reader :value
