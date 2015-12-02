@@ -1,0 +1,24 @@
+{
+  "string_value": "2",
+  "string_value_2": "a",
+  "number_value": 1,
+  "number_value_2": 1.1,
+  "array_value": [
+    1
+  ],
+  "array_value_2" : [
+    "2",
+    1,
+    1.1,
+    null
+  ],
+  "hash_value": {
+    "a": "a"
+  },
+  "hash_value_2": {
+    "string_value": "2",
+    "number_value": 1,
+    "number_value_2": 1.1
+  },
+  "null_value": null
+}
