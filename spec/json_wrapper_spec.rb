@@ -109,4 +109,10 @@ RSpec.describe JsonWrapper do
     expect(j[:what][:hello].null?).to eq true
     expect(j[:what][:hello].array!).to eq []
   end
+  it "should work with magic method" do
+    expect(j.hash_value_2.string_value.string).to eq("2")
+    expect(j.hash_value_2.string_value.number).to eq(nil)
+    expect(j.hash_value_2.string_value.array).to eq(nil)
+    expect(j.what.hello.null?).to eq true
+  end
 end

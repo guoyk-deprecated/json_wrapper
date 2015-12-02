@@ -123,4 +123,9 @@ class JsonWrapper
     get(key)
   end
 
+  # @see #get
+  def method_missing(*args)
+    get args.first
+  end
+
 end
