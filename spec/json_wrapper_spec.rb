@@ -125,4 +125,10 @@ RSpec.describe JsonWrapper do
     end
     expect(result).to eq true
   end
+  it "should work with resolve_chain" do
+    expect(j.resolve_chain([:array_value_3, 1]).string).to eq "1"
+    expect(j.resolve_chain(:array_value_3, 1).string).to eq "1"
+    expect(j.resolve_chain("array_value_3", "1").string).to eq "1"
+    expect(j.resolve_chain("array_value_3", :"1").string).to eq "1"
+  end
 end

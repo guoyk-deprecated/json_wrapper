@@ -115,9 +115,22 @@ class JsonWrapper
   # @return [JsonWrapper] JsonWrapper of the value
   def get(key)
     return JsonWrapper.new(value[key])       if array? and key.kind_of?(Fixnum)
+    return JsonWrapper.new(value[key.to_i])  if array? and key.kind_of?(String)
+    return JsonWrapper.new(value[key.to_s.to_i])  if array? and key.kind_of?(Symbol)
     return JsonWrapper.new(value[key])       if hash? and key.kind_of?(String)
     return JsonWrapper.new(value[key.to_s])  if hash? and key.kind_of?(Symbol)
     JsonWrapper.new
+  end
+
+  # Try to get value by chained call of keys
+  # @param key [Array] array of keys, can be String or Fixnum
+  # @return [JsonWrapper] JsonWrapper of the value
+  def resolve_chain(*keys)
+    target = self
+    keys.flatten.each do |key|
+      target = target[key]
+    end
+    target
   end
 
   # @see #get
